@@ -2,14 +2,49 @@
 
 from odoo import models, fields, api
 
-# class covid-19(models.Model):
-#     _name = 'covid-19.covid-19'
+class covid_19(models.Model):
+    _name = 'covid.covid_19'
 
-#     name = fields.Char()
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         self.value2 = float(self.value) / 100
+    source = fields.Char(string='Source', required=True)
+    date = fields.Datetime(string='Date Time', required=True, default=fields.Datetime.now())
+    country_id = fields.Many2one('res.country', required=True)
+    infected = fields.Integer(string='Infected', required=True, default=0)
+    recovered = fields.Integer(string='Recovered', required=True, default=0)
+    deceased = fields.Integer(string='Deceased', required=True, default=0)
+    total_infected = fields.Integer(string='Total Infected', compute='set_total_infected', required=True, default=0)
+    total_recovered = fields.Integer(string='Total Recovered', compute='set_total_recovered', required=True, default=0)
+    total_deceased = fields.Integer(string='Total Deceased', compute='set_total_deceased', required=True, default=0)
+
+    def set_total_infected(self):
+        for data in self:
+            domain=[
+                ('country_id', '=', data.country_id.id),
+                ('date', '<', data.date),
+            ]
+            records=self.search(domain)
+            Infecteds=records.mapped('infected')
+            data.total_infected=sum(Infecteds)+data.infected
+
+    def set_total_recovered(self):
+        for data in self:
+            domain=[
+                ('country_id', '=', data.country_id.id),
+                ('date', '<', data.date),
+            ]
+            records=self.search(domain)
+            Recovereds=records.mapped('recovered')
+            data.total_recovered=sum(Recovereds)+data.recovered
+
+    def set_total_deceased(self):
+        for data in self:
+            domain=[
+                ('country_id', '=', data.country_id.id),
+                ('date', '<', data.date),
+            ]
+            records=self.search(domain)
+            Deceaseds=records.mapped('deceased')
+            data.total_deceased=sum(Deceaseds)+data.deceased
+
+    # @api.depends('value')
+    # def _value_pc(self):
+    #     self.value2 = float(self.value) / 100

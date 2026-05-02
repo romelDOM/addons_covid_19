@@ -1,60 +1,94 @@
 <odoo>
   <data>
+    <!-- explicit calendar view definition -->
+    <record model="ir.ui.view" id="view_covid_covid_19_calendar">
+      <field name="name">covid.covid_19.calendar</field>
+      <field name="model">covid.covid_19</field>
+      <field name="arch" type="xml">
+        <calendar string="Covid 19" date_start="date">
+          <field name="country_id"/>
+          <field name="infected"/>
+        </calendar>
+      </field>
+    </record>
+    
+    <!-- explicit graph view definition -->
+    <record model="ir.ui.view" id="view_covid_covid_19_graph">
+      <field name="name">covid.covid_19.graph</field>
+      <field name="model">covid.covid_19</field>
+      <field name="arch" type="xml">
+        <graph string="Covid 19">
+          <field name="country_id"/>
+          <field name="infected" type="measure"/>
+        </graph>
+      </field>
+    </record>
+
+    <!-- explicit pivot view definition -->
+    <record model="ir.ui.view" id="view_covid_covid_19_pivot">
+      <field name="name">covid.covid_19.pivot</field>
+      <field name="model">covid.covid_19</field>
+      <field name="arch" type="xml">
+        <pivot string="Covid 19">
+          <field name="date" type="row"/>
+          <field name="country_id" type="row"/>
+          <field name="infected" type="measure"/>
+          <field name="recovered" type="measure"/>
+          <field name="deceased" type="measure"/>
+        </pivot>
+      </field>
+    </record>
+
     <!-- explicit list view definition -->
-    <!--
-    <record model="ir.ui.view" id="covid-19.list">
-      <field name="name">covid-19 list</field>
-      <field name="model">covid-19.covid-19</field>
+    <record model="ir.ui.view" id="covid_19_list">
+      <field name="name">covid.covid_19.list</field>
+      <field name="model">covid.covid_19</field>
       <field name="arch" type="xml">
         <tree>
-          <field name="name"/>
-          <field name="value"/>
-          <field name="value2"/>
+          <field name="source"/>
+          <field name="date"/>
+          <field name="country_id"/>
+          <field name="infected"/>
+          <field name="recovered"/>
+          <field name="deceased"/>
         </tree>
       </field>
     </record>
-    -->
-
-    <!-- actions opening views on models -->
-    <!--
-    <record model="ir.actions.act_window" id="covid-19.action_window">
-      <field name="name">covid-19 window</field>
-      <field name="res_model">covid-19.covid-19</field>
-      <field name="view_mode">tree,form</field>
-    </record>
-    -->
-
-    <!-- server action to the one above -->
-    <!--
-    <record model="ir.actions.server" id="covid-19.action_server">
-      <field name="name">covid-19 server</field>
-      <field name="model_id" ref="model_covid-19_covid-19"/>
-      <field name="state">code</field>
-      <field name="code">
-        action = {
-          "type": "ir.actions.act_window",
-          "view_mode": "tree,form",
-          "res_model": self._name,
-        }
+    
+    <!-- explicit form view definition -->
+    <record model="ir.ui.view" id="covid_19_form">
+      <field name="name">covid.covid_19 form</field>
+      <field name="model">covid.covid_19</field>
+      <field name="arch" type="xml">
+        <form>
+          <group>
+            <field name="source"/>
+            <field name="date"/>
+            <field name="country_id"/>
+            <field name="infected"/>
+            <field name="recovered"/>
+            <field name="deceased"/>
+            <field name="total_infected"/>
+            <field name="total_recovered"/>
+            <field name="total_deceased"/>
+          </group>
+        </form>
       </field>
     </record>
-    -->
+   
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="covid_19_action_window">
+      <field name="name">Registro Covid 19</field>
+      <field name="res_model">covid.covid_19</field>
+      <field name="view_mode">tree,form,calendar,graph,pivot</field>
+    </record>
 
     <!-- Top menu item -->
-    <!--
-    <menuitem name="covid-19" id="covid-19.menu_root"/>
-    -->
+    <menuitem name="Covid-19" id="covid_19_menu_root"/>
+   
     <!-- menu categories -->
-    <!--
-    <menuitem name="Menu 1" id="covid-19.menu_1" parent="covid-19.menu_root"/>
-    <menuitem name="Menu 2" id="covid-19.menu_2" parent="covid-19.menu_root"/>
-    -->
-    <!-- actions -->
-    <!--
-    <menuitem name="List" id="covid-19.menu_1_list" parent="covid-19.menu_1"
-              action="covid-19.action_window"/>
-    <menuitem name="Server to list" id="covid-19" parent="covid-19.menu_2"
-              action="covid-19.action_server"/>
-    -->
+    <menuitem name="Menu 1" id="covid_19_menu_1" parent="covid_19_menu_root" action="covid_19_action_window"/>
+
   </data>
 </odoo>
