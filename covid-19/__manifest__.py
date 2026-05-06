@@ -27,6 +27,10 @@
         'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
+        'report/daily_external_layout.xml',
+        'report/daily_internal_layout.xml',
+        'report/dates_external_layout.xml',
+        'wizard/date_report.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
